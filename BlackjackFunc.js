@@ -1,4 +1,3 @@
-// Functional Approach
 /*
 An objects of suits for each cards using enumeration
 */
@@ -10,7 +9,7 @@ const suit = {
 };
 /*
   These are the weights of each card
-  */
+*/
 const weight = {
   two: 2,
   three: 3,
@@ -26,7 +25,7 @@ const weight = {
   king: 10,
   ace: 11,
 };
-// grabs both the objects
+
 function createDeck() {
   const freshDeck = [];
 
@@ -41,18 +40,15 @@ function createDeck() {
   return freshDeck;
 }
 
-// console.log(deck);
-
-// how can we connect the shuffle to the object
+// fisher-yates shuffle
 function shuffle() {
   for (let i = deck.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    // eslint-disable-next-line no-unused-expressions
-    [deck[i], deck[j]] = [deck[j], deck[i]];
+    const j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
+    [deck[i], deck[j]] = [deck[j], deck[i]]; // swap elements
   }
   return deck;
 }
-// console.log(deck);
+
 const deal = deck => {
   const table = {};
   table.playersHand = [];
@@ -67,15 +63,28 @@ const deal = deck => {
   return table;
 };
 
-// function calculateHandValue(hand) {
-//     .reduce((total, curr) => total + curr.Weight, 0);
-// }
-// return playersHand.map(hand => hand.weight)
+const winner = table => {
+  const { dealersHand, playersHand } = table;
 
-// function displayHands() {}
+  const playersSum = playersHand
+    .map(card => card.weights)
+    .reduce((fCard, sCard) => fCard + sCard);
+
+  const dealersSum = dealersHand
+    .map(card => card.weights)
+    .reduce((fCard, sCard) => fCard + sCard);
+
+  if (playersSum > dealersSum) {
+    console.log('PLAYER WINS!!', playersSum);
+  } else if (playersSum < dealersSum) {
+    console.log('DEALER WINS!', dealersSum);
+  } else {
+    console.log('TIE GAME!!');
+  }
+};
 
 const deck = createDeck();
 const shuffleHand = shuffle(deck);
 const table = deal(deck);
-// const calc = calculateHandValue(table);
+const calc = winner(table);
 console.log(table);
